@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Information | Shabir</title>
+<style>
+	body{
+		width:100%;
+		font-size:16px;
+		font-family:Arial;
+	}
+	.accountInformation .accountSection{
+		width:30%;
+		height:auto;
+		border:4px solid #138fcd;
+	}
+	.accountInformation table.accountInfo{
+		width:100%;
+		table-layout:fixed;
+	}
+	.accountInformation table.accountInfo > thead > tr:first-child > th{
+		background-color:#f7f7f7;
+		font-weight:normal;
+		padding:5px 10px;
+		vertical-align: bottom;
+	}
+	.accountInformation table.accountInfo  > tbody > tr > td span,
+	.accountInformation table.accountInfo  > thead > tr > th span{
+		display:block;
+	}
+	.accountInformation table.accountInfo > thead > tr:first-child > th:nth-child(2){
+		background-color:#efefef;
+	}
+	.accountInformation table.accountInfo > tbody > tr > td,
+	.accountInformation table.accountInfo > thead > tr > th{
+		padding:12px 10px;
+		border-bottom:1px solid #efefef;
+		text-align:right;
+	}
+	.accountInformation table.accountInfo > tbody > tr > td:first-child,
+	.accountInformation table.accountInfo > thead > tr > th:first-child{
+		text-align:left;
+	}
+	.accountInformation table.accountInfo > tbody > tr > td:first-child{
+		color:#3888a9;
+	}
+	.accountInformation table.accountInfo > tbody > tr > td{
+		font-weight:bold;
+	}
+	.accountInformation table.accountInfo > tbody > tr > td span.accPercentage{
+		color:#5eb35e;
+	}
+	.accountInformation table.accountInfo > tbody > tr > td span.accPercentageRed{
+		color:#ff1717;
+	}
+	.accountInformation table.accountInfo > thead > tr > th span.tdChange{
+		color:gray;
+	}
+	.accountInformation .accountSection .loadMoreSection{
+		width:100%;
+		text-align:center;
+		padding:15px;
+		color:#138fcd;
+		font-weight:bold;
+	}
+</style>
+</head>
+<body>
+	<div class="mainSection accountInformation">
+		<div class="accountSection">
+			<table class="accountInfo">
+				<thead>
+					<th>
+						<span>Account</span>
+					</th>
+					<th>
+						<span>Available Cash</span>
+						<span class="tdChange">Today's Change</span>
+					</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<span class="accNum">IRA - 5200</span>
+						</td>
+						<td>
+							<span class="accBalance">$5,763.36</span>
+							<span class="accPercentage accPercentageRed">-0.08% / $8,916.89</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="accNum">AAA - 1812</span>
+						</td>
+						<td>
+							<span class="accBalance">$2,010,962.10</span>
+							<span class="accPercentage">+0.21% / $38,881.63</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="accNum">AAA - 3810</span>
+						</td>
+						<td>
+							<span class="accBalance">$10,050,054.07</span>
+							<span class="accPercentage">+0.07% / $8,916.69</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="loadMoreSection">
+				<span>Load more</span>
+			</div>
+		</div>
+	</div>
+<script>
+	acctData = [
+	{"acctNum": "AAA - 1234","user": "Alice"},
+	{"acctNum": "AAA - 5231","user": "Bob"},
+	{"acctNum": "AAA - 9921","user": "Alice"},
+	{"acctNum": "AAA - 8191","user": "Alice"}
+	];
+	balance = {
+	 "AAA - 1234": 4593.22,
+	 "AAA - 9921": 0,
+	 "AAA - 5231": 232142.5,
+	 "AAA - 8191": 4344
+	};
+	
+	//This function return only account numbers
+	var onlyAccountNumber = acctData.map(function(accNumbers) {
+		 return accNumbers.acctNum;
+	});
+	console.log("Return Only Account Numbers");
+	console.log(onlyAccountNumber);
+
+	//This function compares account number and returns in Ascending order
+	function sortAccFunction(a, b){
+		var accNum1=a.acctNum.toLowerCase(), accNum2=b.acctNum.toLowerCase();
+		if (accNum1 < accNum2) //sort string ascending
+			return -1 
+		if (accNum1 > accNum2)
+			return 1
+		return 0 
+	}
+	var sortAccNumbers=acctData.sort(sortAccFunction);
+	console.log("Sorting by Account Number in Ascending Order or Descending Order (By Default Asc)");
+	console.log(sortAccNumbers);
+	
+	//This function return only account numbers against matched user name
+	function filterbyuserName(userName){
+	var filteruserData=acctData.filter(function(accNum) {
+		return accNum.user == userName;
+	});
+	return filteruserData;
+	}
+
+	var userName="Alice";
+	var filterByName = filterbyuserName(userName);
+	console.log("Filter Data by Username (Given name as 'Alice')");
+	console.log(filterByName);
+
+	//This function merges the data
+	var newAccDet=[];
+	function mergeData(){
+		for(var i=0; i<acctData.length; i++){
+			var accNum1=acctData[i].acctNum;
+			var usrName=acctData[i].user;
+			newAccDet.push({'acctNum':accNum1,'user':usrName,'balance':balance[accNum1]});
+		}
+	}
+
+	mergeData();
+	//This function sorts the data based on acc balance
+	function sortBalanceWise(x, y){
+		var balance1=x.balance, balance2=y.balance;
+		if (balance1 < balance2) //sort in ascending order
+			return -1 
+		if (balance1 > balance2)
+			return 1
+		return 0 
+	}
+	var sortbalancewiseData=newAccDet.sort(sortBalanceWise);
+	console.log("Sorting By Balance in Ascending Order or Descending Order (By Default Asc)");
+	console.log(sortbalancewiseData);
+
+</script>
+</body>
+</html>
